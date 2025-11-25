@@ -78,7 +78,7 @@ This example provides simple YOLOv3 training and inference examples. For full do
         yolo predict model=yolov3n.pt source=path/to/bus.jpg
         ```
 
-## Citations and Acknowledgements
+## Citations and Acknowledgments
 
 If you use YOLOv3 in your research, please cite the original YOLO papers and the Ultralytics YOLOv3 repository:
 
@@ -182,4 +182,4 @@ If you use YOLOv3 in your research, please cite the original YOLO papers and the
         }
         ```
 
-For more citation details, refer to the [Citations and Acknowledgements](#citations-and-acknowledgements) section.
+For more citation details, refer to the [Citations and Acknowledgments](#citations-and-acknowledgements) section.

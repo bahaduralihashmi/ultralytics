@@ -1,6 +1,5 @@
-# Ultralytics YOLO 🚀, AGPL-3.0 license
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 
-import cv2
 import torch
 from PIL import Image
 
@@ -10,13 +9,9 @@ from ultralytics.utils import DEFAULT_CFG, ops
 
 
 class ClassificationPredictor(BasePredictor):
-    """
-    A class extending the BasePredictor class for prediction based on a classification model.
+    """A class extending the BasePredictor class for prediction based on a classification model.
 
-    Notes:
-        - Torchvision classification models can also be passed to the 'model' argument, i.e. model='resnet18'.
-
-    Example:
+    Examples:
         ```python
         from ultralytics.utils import ASSETS
         from ultralytics.models.yolo.classify import ClassificationPredictor
@@ -25,6 +20,9 @@ class ClassificationPredictor(BasePredictor):
         predictor = ClassificationPredictor(overrides=args)
         predictor.predict_cli()
         ```
+
+    Notes:
+        - Torchvision classification models can also be passed to the 'model' argument, i.e. model='resnet18'.
     """
 
     def __init__(self, cfg=DEFAULT_CFG, overrides=None, _callbacks=None):
@@ -46,9 +44,7 @@ class ClassificationPredictor(BasePredictor):
                 # img = torch.stack(
                 #     [self.transforms(Image.fromarray(cv2.cvtColor(im, cv2.COLOR_BGR2RGB))) for im in img], dim=0
                 # )
-                img = torch.stack(
-                    [self.transforms(Image.fromarray(im)) for im in img], dim=0
-                )
+                img = torch.stack([self.transforms(Image.fromarray(im)) for im in img], dim=0)
 
         img = (img if isinstance(img, torch.Tensor) else torch.from_numpy(img)).to(self.model.device)
         return img.half() if self.model.fp16 else img.float()  # uint8 to fp16/32

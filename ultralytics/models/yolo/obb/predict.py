@@ -1,4 +1,4 @@
-# Ultralytics YOLO 🚀, AGPL-3.0 license
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 
 import torch
 
@@ -8,10 +8,9 @@ from ultralytics.utils import DEFAULT_CFG, ops
 
 
 class OBBPredictor(DetectionPredictor):
-    """
-    A class extending the DetectionPredictor class for prediction based on an Oriented Bounding Box (OBB) model.
+    """A class extending the DetectionPredictor class for prediction based on an Oriented Bounding Box (OBB) model.
 
-    Example:
+    Examples:
         ```python
         from ultralytics.utils import ASSETS
         from ultralytics.models.yolo.obb import OBBPredictor

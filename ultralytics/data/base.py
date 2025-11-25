@@ -1,4 +1,5 @@
-# Ultralytics YOLO 🚀, AGPL-3.0 license
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
+from __future__ import annotations
 
 import glob
 import math
@@ -7,7 +8,6 @@ import random
 from copy import deepcopy
 from multiprocessing.pool import ThreadPool
 from pathlib import Path
-from typing import Optional
 
 import cv2
 import numpy as np
@@ -19,8 +19,7 @@ from ultralytics.utils import DEFAULT_CFG, LOCAL_RANK, LOGGER, NUM_THREADS, TQDM
 
 
 class BaseDataset(Dataset):
-    """
-    Base dataset class for loading and processing image data.
+    """Base dataset class for loading and processing image data.
 
     Args:
         img_path (str): Path to the folder containing images.
@@ -127,7 +126,7 @@ class BaseDataset(Dataset):
             im_files = im_files[: round(len(im_files) * self.fraction)]  # retain a fraction of the dataset
         return im_files
 
-    def update_labels(self, include_class: Optional[list]):
+    def update_labels(self, include_class: list | None):
         """Update labels to include only these classes (optional)."""
         include_class_array = np.array(include_class).reshape(1, -1)
         for i in range(len(self.labels)):
@@ -277,10 +276,9 @@ class BaseDataset(Dataset):
         return label
 
     def build_transforms(self, hyp=None):
-        """
-        Users can customize augmentations here.
+        """Users can customize augmentations here.
 
-        Example:
+        Examples:
             ```python
             if self.augment:
                 # Training transforms
@@ -293,10 +291,9 @@ class BaseDataset(Dataset):
         raise NotImplementedError
 
     def get_labels(self):
-        """
-        Users can customize their own format here.
+        """Users can customize their own format here.
 
-        Note:
+        Notes:
             Ensure output is a dictionary with the following keys:
             ```python
             dict(

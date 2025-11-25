@@ -101,7 +101,7 @@ You can download the model [here](https://github.com/ChaoningZhang/MobileSAM/blo
 
 We have implemented `MobileSAM` and `SAM` using the same API. For more usage information, please see the [SAM page](sam.md).
 
-## Citations and Acknowledgements
+## Citations and Acknowledgments
 
 If you find MobileSAM useful in your research or development work, please consider citing our paper:
 

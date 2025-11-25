@@ -1,4 +1,4 @@
-# Ultralytics YOLO 🚀, AGPL-3.0 license
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 
 import argparse
 from pathlib import Path
@@ -30,8 +30,7 @@ class SAHIInference:
     def inference(
         self, weights="yolov8n.pt", source="test.mp4", view_img=False, save_img=False, exist_ok=False, track=False
     ):
-        """
-        Run object detection on a video using YOLOv8 and SAHI.
+        """Run object detection on a video using YOLOv8 and SAHI.
 
         Args:
             weights (str): Model weights path.

@@ -94,7 +94,7 @@ Please note that the specific steps may vary depending on your specific use case
 
 We regret any inconvenience this may cause and will strive to update this document with usage examples for Ultralytics once support for YOLOv7 is implemented.
 
-## Citations and Acknowledgements
+## Citations and Acknowledgments
 
 We would like to acknowledge the YOLOv7 authors for their significant contributions in the field of real-time object detection:
 
@@ -151,4 +151,4 @@ YOLOv7 offers several key features that revolutionize real-time object detection
 - **Dynamic Label Assignment**: Uses a coarse-to-fine lead guided method to assign dynamic targets for outputs across different branches, improving accuracy.
 - **Extended and Compound Scaling**: Efficiently utilizes parameters and computation to scale the model for various real-time applications.
 - **Efficiency**: Reduces parameter count by 40% and computation by 50% compared to other state-of-the-art models while achieving faster inference speeds.
-    For further details on these features, see the [YOLOv7 Overview](#overview) section.
+  For further details on these features, see the [YOLOv7 Overview](#overview) section.

@@ -1,4 +1,4 @@
-# Ultralytics YOLO 🚀, AGPL-3.0 license
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 
 from ultralytics.utils import ASSETS, ROOT, WEIGHTS_DIR, checks
 
@@ -12,12 +12,12 @@ CUDA_IS_AVAILABLE = checks.cuda_is_available()
 CUDA_DEVICE_COUNT = checks.cuda_device_count()
 
 __all__ = (
-    "MODEL",
     "CFG",
+    "CUDA_DEVICE_COUNT",
+    "CUDA_IS_AVAILABLE",
+    "IS_TMP_WRITEABLE",
+    "MODEL",
     "SOURCE",
     "SOURCES_LIST",
     "TMP",
-    "IS_TMP_WRITEABLE",
-    "CUDA_IS_AVAILABLE",
-    "CUDA_DEVICE_COUNT",
 )

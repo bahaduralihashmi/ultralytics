@@ -1,4 +1,4 @@
-# Ultralytics YOLO 🚀, AGPL-3.0 license
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 
 import contextlib
 import json
@@ -44,8 +44,7 @@ DATASET_CACHE_VERSION = "1.0.3"
 
 
 class YOLODataset(BaseDataset):
-    """
-    Dataset class for loading object detection and/or segmentation labels in YOLO format.
+    """Dataset class for loading object detection and/or segmentation labels in YOLO format.
 
     Args:
         data (dict, optional): A dataset YAML dictionary. Defaults to None.
@@ -65,8 +64,7 @@ class YOLODataset(BaseDataset):
         super().__init__(*args, **kwargs)
 
     def cache_labels(self, path=Path("./labels.cache")):
-        """
-        Cache dataset labels, check images and read shapes.
+        """Cache dataset labels, check images and read shapes.
 
         Args:
             path (Path): Path where to save the cache file. Default is Path('./labels.cache').
@@ -203,10 +201,9 @@ class YOLODataset(BaseDataset):
         self.transforms = self.build_transforms(hyp)
 
     def update_labels_info(self, label):
-        """
-        Custom your label format here.
+        """Custom your label format here.
 
-        Note:
+        Notes:
             cls is not with bboxes now, classification and semantic segmentation need an independent cls label
             Can also support classification and semantic segmentation by adding or removing dict keys there.
         """
@@ -248,8 +245,7 @@ class YOLODataset(BaseDataset):
 
 
 class YOLOMultiModalDataset(YOLODataset):
-    """
-    Dataset class for loading object detection and/or segmentation labels in YOLO format.
+    """Dataset class for loading object detection and/or segmentation labels in YOLO format.
 
     Args:
         data (dict, optional): A dataset YAML dictionary. Defaults to None.
@@ -298,7 +294,7 @@ class GroundingDataset(YOLODataset):
         LOGGER.info("Loading annotation file...")
         with open(self.json_file) as f:
             annotations = json.load(f)
-        images = {f'{x["id"]:d}': x for x in annotations["images"]}
+        images = {f"{x['id']:d}": x for x in annotations["images"]}
         img_to_anns = defaultdict(list)
         for ann in annotations["annotations"]:
             img_to_anns[ann["image_id"]].append(ann)
@@ -327,7 +323,7 @@ class GroundingDataset(YOLODataset):
                     cat2id[cat_name] = len(cat2id)
                     texts.append([cat_name])
                 cls = cat2id[cat_name]  # class
-                box = [cls] + box.tolist()
+                box = [cls, *box.tolist()]
                 if box not in bboxes:
                     bboxes.append(box)
             lb = np.array(bboxes, dtype=np.float32) if len(bboxes) else np.zeros((0, 5), dtype=np.float32)
@@ -354,8 +350,7 @@ class GroundingDataset(YOLODataset):
 
 
 class YOLOConcatDataset(ConcatDataset):
-    """
-    Dataset as a concatenation of multiple datasets.
+    """Dataset as a concatenation of multiple datasets.
 
     This class is useful to assemble different existing datasets.
     """
@@ -368,13 +363,12 @@ class YOLOConcatDataset(ConcatDataset):
 
 # TODO: support semantic segmentation
 class SemanticDataset(BaseDataset):
-    """
-    Semantic Segmentation Dataset.
+    """Semantic Segmentation Dataset.
 
     This class is responsible for handling datasets used for semantic segmentation tasks. It inherits functionalities
     from the BaseDataset class.
 
-    Note:
+    Notes:
         This class is currently a placeholder and needs to be populated with methods and attributes for supporting
         semantic segmentation tasks.
     """
@@ -385,8 +379,7 @@ class SemanticDataset(BaseDataset):
 
 
 class ClassificationDataset:
-    """
-    Extends torchvision ImageFolder to support YOLO classification tasks, offering functionalities like image
+    """Extends torchvision ImageFolder to support YOLO classification tasks, offering functionalities like image
     augmentation, caching, and verification. It's designed to efficiently handle large datasets for training deep
     learning models, with optional image transformations and caching mechanisms to speed up training.
 
@@ -398,13 +391,12 @@ class ClassificationDataset:
         cache_ram (bool): Indicates if caching in RAM is enabled.
         cache_disk (bool): Indicates if caching on disk is enabled.
         samples (list): A list of tuples, each containing the path to an image, its class index, path to its .npy cache
-                        file (if caching on disk), and optionally the loaded image array (if caching in RAM).
+            file (if caching on disk), and optionally the loaded image array (if caching in RAM).
         torch_transforms (callable): PyTorch transforms to be applied to the images.
     """
 
     def __init__(self, root, args, augment=False, prefix=""):
-        """
-        Initialize YOLO object with root, image size, augmentations, and cache settings.
+        """Initialize YOLO object with root, image size, augmentations, and cache settings.
 
         Args:
             root (str): Path to the dataset directory where images are stored in a class-specific folder structure.
@@ -419,8 +411,8 @@ class ClassificationDataset:
         import torchvision  # scope for faster 'import ultralytics'
 
         # Base class assigned as attribute rather than used as base class to allow for scoping slow torchvision import
-        self._use_numpy = args.get("numpy",False)
-        self._ch = args.get("ch",3)
+        self._use_numpy = args.get("numpy", False)
+        self._ch = args.get("ch", 3)
 
         if TORCHVISION_0_18:  # 'allow_empty' argument first introduced in torchvision 0.18
             self.base = torchvision.datasets.ImageFolder(root=root, allow_empty=True)
@@ -442,7 +434,7 @@ class ClassificationDataset:
             self.cache_ram = False
         self.cache_disk = str(args.cache).lower() == "disk"  # cache images on hard drive as uncompressed *.npy files
         self.samples = self.verify_images()  # filter out bad images
-        self.samples = [list(x) + [Path(x[0]).with_suffix(".npy"), None] for x in self.samples]  # file, index, npy, im
+        self.samples = [[*list(x), Path(x[0]).with_suffix(".npy"), None] for x in self.samples]  # file, index, npy, im
         scale = (1.0 - args.scale, 1.0)  # (0.08, 1.0)
         self.torch_transforms = (
             classify_augmentations(
@@ -463,26 +455,26 @@ class ClassificationDataset:
     def __getitem__(self, i):
         """Returns subset of data and targets corresponding to given indices."""
         f, j, fn, im = self.samples[i]  # filename, index, filename.with_suffix('.npy'), image
-        read_mode = cv2.IMREAD_COLOR if self._ch ==3 else cv2.IMREAD_GRAYSCALE
+        read_mode = cv2.IMREAD_COLOR if self._ch == 3 else cv2.IMREAD_GRAYSCALE
         if self.cache_ram:
             if im is None:  # Warning: two separate if statements required here, do not combine this with previous line
-                im = self.samples[i][3] = cv2.imread(f,read_mode)
+                im = self.samples[i][3] = cv2.imread(f, read_mode)
         elif self.cache_disk:
             if not fn.exists():  # load npy
-                np.save(fn.as_posix(), cv2.imread(f,read_mode), allow_pickle=False)
+                np.save(fn.as_posix(), cv2.imread(f, read_mode), allow_pickle=False)
             im = np.load(fn)
         else:  # read image
-            im = cv2.imread(f,read_mode)  # BGR
+            im = cv2.imread(f, read_mode)  # BGR
 
         if self._use_numpy:
             im = torch.from_numpy(im)
-            if self._ch ==3:
+            if self._ch == 3:
                 im = im.permute(2, 0, 1)
             else:
                 im = im.unsqueeze(0)
 
-        else: 
-            if self._ch==3:
+        else:
+            if self._ch == 3:
                 im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
             im = Image.fromarray(im)
         sample = self.torch_transforms(im)

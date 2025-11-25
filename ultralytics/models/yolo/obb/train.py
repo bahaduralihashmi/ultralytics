@@ -1,4 +1,4 @@
-# Ultralytics YOLO 🚀, AGPL-3.0 license
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 
 from copy import copy
 
@@ -8,10 +8,9 @@ from ultralytics.utils import DEFAULT_CFG, RANK
 
 
 class OBBTrainer(yolo.detect.DetectionTrainer):
-    """
-    A class extending the DetectionTrainer class for training based on an Oriented Bounding Box (OBB) model.
+    """A class extending the DetectionTrainer class for training based on an Oriented Bounding Box (OBB) model.
 
-    Example:
+    Examples:
         ```python
         from ultralytics.models.yolo.obb import OBBTrainer
 

@@ -90,7 +90,7 @@ This example provides simple YOLOv5 training and inference examples. For full do
         yolo predict model=yolov5n.pt source=path/to/bus.jpg
         ```
 
-## Citations and Acknowledgements
+## Citations and Acknowledgments
 
 If you use YOLOv5 or YOLOv5u in your research, please cite the Ultralytics YOLOv5 repository as follows:
 

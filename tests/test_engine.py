@@ -1,4 +1,4 @@
-# Ultralytics YOLO 🚀, AGPL-3.0 license
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 
 import sys
 from unittest import mock
@@ -11,7 +11,7 @@ from ultralytics.models.yolo import classify, detect, segment
 from ultralytics.utils import ASSETS, DEFAULT_CFG, WEIGHTS_DIR
 
 
-def test_func(*args):  # noqa
+def test_func(*args):
     """Test function callback for evaluating YOLO model performance metrics."""
     print("callback test passed")
 

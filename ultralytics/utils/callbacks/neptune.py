@@ -1,4 +1,4 @@
-# Ultralytics YOLO 🚀, AGPL-3.0 license
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 
 from ultralytics.utils import LOGGER, SETTINGS, TESTS_RUNNING
 
@@ -31,8 +31,7 @@ def _log_images(imgs_dict, group=""):
 
 
 def _log_plot(title, plot_path):
-    """
-    Log plots to the NeptuneAI experiment logger.
+    """Log plots to the NeptuneAI experiment logger.
 
     Args:
         title (str): Title of the plot.

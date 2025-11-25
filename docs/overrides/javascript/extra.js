@@ -1,3 +1,5 @@
+// Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
+
 // Function that applies light/dark theme based on the user's preference
 const applyAutoTheme = () => {
   // Determine the user's preferred color scheme
@@ -61,9 +63,12 @@ if (autoThemeInput) {
 }
 
 // Add iframe navigation
-window.onhashchange = function() {
-    window.parent.postMessage({
-        type: 'navigation',
-        hash: window.location.pathname + window.location.search + window.location.hash
-    }, '*');
+window.onhashchange = function () {
+  window.parent.postMessage(
+    {
+      type: "navigation",
+      hash: window.location.pathname + window.location.search + window.location.hash,
+    },
+    "*",
+  );
 };

@@ -1,4 +1,5 @@
-# Ultralytics YOLO 🚀, AGPL-3.0 license
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
+from __future__ import annotations
 
 import contextlib
 import gc
@@ -10,7 +11,6 @@ from contextlib import contextmanager
 from copy import deepcopy
 from datetime import datetime
 from pathlib import Path
-from typing import Union
 
 import numpy as np
 import torch
@@ -78,8 +78,7 @@ def smart_inference_mode():
 
 
 def autocast(enabled: bool, device: str = "cuda"):
-    """
-    Get the appropriate autocast context manager based on PyTorch version and AMP setting.
+    """Get the appropriate autocast context manager based on PyTorch version and AMP setting.
 
     This function returns a context manager for automatic mixed precision (AMP) training that is compatible with both
     older and newer versions of PyTorch. It handles the differences in the autocast API between PyTorch versions.
@@ -91,16 +90,16 @@ def autocast(enabled: bool, device: str = "cuda"):
     Returns:
         (torch.amp.autocast): The appropriate autocast context manager.
 
-    Note:
-        - For PyTorch versions 1.13 and newer, it uses `torch.amp.autocast`.
-        - For older versions, it uses `torch.cuda.autocast`.
-
-    Example:
+    Examples:
         ```python
         with autocast(amp=True):
             # Your mixed precision operations here
             pass
         ```
+
+    Notes:
+        - For PyTorch versions 1.13 and newer, it uses `torch.amp.autocast`.
+        - For older versions, it uses `torch.cuda.autocast`.
     """
     if TORCH_1_13:
         return torch.amp.autocast(device, enabled=enabled)
@@ -124,17 +123,16 @@ def get_cpu_info():
 
 
 def select_device(device="", batch=0, newline=False, verbose=True):
-    """
-    Selects the appropriate PyTorch device based on the provided arguments.
+    """Selects the appropriate PyTorch device based on the provided arguments.
 
     The function takes a string specifying the device or a torch.device object and returns a torch.device object
     representing the selected device. The function also validates the number of available devices and raises an
     exception if the requested device(s) are not available.
 
     Args:
-        device (str | torch.device, optional): Device string or torch.device object.
-            Options are 'None', 'cpu', or 'cuda', or '0' or '0,1,2,3'. Defaults to an empty string, which auto-selects
-            the first available GPU, or CPU if no GPU is available.
+        device (str | torch.device, optional): Device string or torch.device object. Options are 'None', 'cpu', or
+            'cuda', or '0' or '0,1,2,3'. Defaults to an empty string, which auto-selects the first available GPU, or CPU
+            if no GPU is available.
         batch (int, optional): Batch size being used in your model. Defaults to 0.
         newline (bool, optional): If True, adds a newline at the end of the log string. Defaults to False.
         verbose (bool, optional): If True, logs the device information. Defaults to True.
@@ -153,7 +151,7 @@ def select_device(device="", batch=0, newline=False, verbose=True):
         >>> select_device("cpu")
         device(type='cpu')
 
-    Note:
+    Notes:
         Sets the 'CUDA_VISIBLE_DEVICES' environment variable for specifying which GPUs to use.
     """
     if isinstance(device, torch.device):
@@ -293,8 +291,7 @@ def fuse_deconv_and_bn(deconv, bn):
 
 
 def model_info(model, detailed=False, verbose=True, imgsz=640):
-    """
-    Model information.
+    """Model information.
 
     imgsz may be int or list, i.e. imgsz=640 or imgsz=[640, 320].
     """
@@ -334,10 +331,9 @@ def get_num_gradients(model):
 
 
 def model_info_for_loggers(trainer):
-    """
-    Return model info dict with useful model information.
+    """Return model info dict with useful model information.
 
-    Example:
+    Examples:
         YOLOv8n info for loggers
         ```python
         results = {
@@ -498,8 +494,7 @@ def init_seeds(seed=0, deterministic=False):
 
 
 class ModelEMA:
-    """
-    Updated Exponential Moving Average (EMA) from https://github.com/rwightman/pytorch-image-models. Keeps a moving
+    """Updated Exponential Moving Average (EMA) from https://github.com/rwightman/pytorch-image-models. Keeps a moving
     average of everything in the model state_dict (parameters and buffers).
 
     For EMA details see https://www.tensorflow.org/api_docs/python/tf/train/ExponentialMovingAverage
@@ -535,9 +530,8 @@ class ModelEMA:
             copy_attr(self.ema, model, include, exclude)
 
 
-def strip_optimizer(f: Union[str, Path] = "best.pt", s: str = "", updates: dict = None) -> dict:
-    """
-    Strip optimizer from 'f' to finalize training, optionally save as 's'.
+def strip_optimizer(f: str | Path = "best.pt", s: str = "", updates: dict | None = None) -> dict:
+    """Strip optimizer from 'f' to finalize training, optionally save as 's'.
 
     Args:
         f (str): file path to model to strip the optimizer from. Default is 'best.pt'.
@@ -547,7 +541,7 @@ def strip_optimizer(f: Union[str, Path] = "best.pt", s: str = "", updates: dict 
     Returns:
         (dict): The combined checkpoint dictionary.
 
-    Example:
+    Examples:
         ```python
         from pathlib import Path
         from ultralytics.utils.torch_utils import strip_optimizer
@@ -556,7 +550,7 @@ def strip_optimizer(f: Union[str, Path] = "best.pt", s: str = "", updates: dict 
             strip_optimizer(f)
         ```
 
-    Note:
+    Notes:
         Use `ultralytics.nn.torch_safe_load` for missing modules with `x = torch_safe_load(f)[0]`
     """
     try:
@@ -602,8 +596,7 @@ def strip_optimizer(f: Union[str, Path] = "best.pt", s: str = "", updates: dict 
 
 
 def convert_optimizer_state_dict_to_fp16(state_dict):
-    """
-    Converts the state_dict of a given optimizer to FP16, focusing on the 'state' key for tensor conversions.
+    """Converts the state_dict of a given optimizer to FP16, focusing on the 'state' key for tensor conversions.
 
     This method aims to reduce storage size without altering 'param_groups' as they contain non-tensor data.
     """
@@ -616,10 +609,9 @@ def convert_optimizer_state_dict_to_fp16(state_dict):
 
 
 def profile(input, ops, n=10, device=None):
-    """
-    Ultralytics speed, memory and FLOPs profiler.
+    """Ultralytics speed, memory and FLOPs profiler.
 
-    Example:
+    Examples:
         ```python
         from ultralytics.utils.torch_utils import profile
 
@@ -665,7 +657,7 @@ def profile(input, ops, n=10, device=None):
                 mem = torch.cuda.memory_reserved() / 1e9 if torch.cuda.is_available() else 0  # (GB)
                 s_in, s_out = (tuple(x.shape) if isinstance(x, torch.Tensor) else "list" for x in (x, y))  # shapes
                 p = sum(x.numel() for x in m.parameters()) if isinstance(m, nn.Module) else 0  # parameters
-                LOGGER.info(f"{p:12}{flops:12.4g}{mem:>14.3f}{tf:14.4g}{tb:14.4g}{str(s_in):>24s}{str(s_out):>24s}")
+                LOGGER.info(f"{p:12}{flops:12.4g}{mem:>14.3f}{tf:14.4g}{tb:14.4g}{s_in!s:>24s}{s_out!s:>24s}")
                 results.append([p, flops, mem, tf, tb, s_in, s_out])
             except Exception as e:
                 LOGGER.info(e)
@@ -679,8 +671,7 @@ class EarlyStopping:
     """Early stopping class that stops training when a specified number of epochs have passed without improvement."""
 
     def __init__(self, patience=50):
-        """
-        Initialize early stopping object.
+        """Initialize early stopping object.
 
         Args:
             patience (int, optional): Number of epochs to wait after fitness stops improving before stopping.
@@ -691,8 +682,7 @@ class EarlyStopping:
         self.possible_stop = False  # possible stop may occur next epoch
 
     def __call__(self, epoch, fitness):
-        """
-        Check whether to stop training.
+        """Check whether to stop training.
 
         Args:
             epoch (int): Current epoch of training

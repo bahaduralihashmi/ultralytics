@@ -1,4 +1,4 @@
-# Ultralytics YOLO 🚀, AGPL-3.0 license
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 
 from copy import copy
 
@@ -9,10 +9,9 @@ from ultralytics.utils.plotting import plot_images, plot_results
 
 
 class PoseTrainer(yolo.detect.DetectionTrainer):
-    """
-    A class extending the DetectionTrainer class for training based on a pose model.
+    """A class extending the DetectionTrainer class for training based on a pose model.
 
-    Example:
+    Examples:
         ```python
         from ultralytics.models.yolo.pose import PoseTrainer
 

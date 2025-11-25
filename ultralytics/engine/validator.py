@@ -1,4 +1,4 @@
-# Ultralytics YOLO 🚀, AGPL-3.0 license
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 """
 Check a model's accuracy on a test or val split of a dataset.
 
@@ -37,8 +37,7 @@ from ultralytics.utils.torch_utils import de_parallel, select_device, smart_infe
 
 
 class BaseValidator:
-    """
-    BaseValidator.
+    """BaseValidator.
 
     A base class for creating validators.
 
@@ -58,16 +57,15 @@ class BaseValidator:
         nc: Number of classes.
         iouv: (torch.Tensor): IoU thresholds from 0.50 to 0.95 in spaces of 0.05.
         jdict (dict): Dictionary to store JSON validation results.
-        speed (dict): Dictionary with keys 'preprocess', 'inference', 'loss', 'postprocess' and their respective
-                      batch processing times in milliseconds.
+        speed (dict): Dictionary with keys 'preprocess', 'inference', 'loss', 'postprocess' and their respective batch
+            processing times in milliseconds.
         save_dir (Path): Directory to save results.
         plots (dict): Dictionary to store plots for visualization.
         callbacks (dict): Dictionary to store various callback functions.
     """
 
     def __init__(self, dataloader=None, save_dir=None, pbar=None, args=None, _callbacks=None):
-        """
-        Initializes a BaseValidator instance.
+        """Initializes a BaseValidator instance.
 
         Args:
             dataloader (torch.utils.data.DataLoader): Dataloader to be used for validation.
@@ -155,7 +153,7 @@ class BaseValidator:
             model.eval()
 
             # Change warmup channels to specified number of channels
-            model.warmup(imgsz=(1 if pt else self.args.batch, self.args.get("ch",3), imgsz, imgsz))  # warmup
+            model.warmup(imgsz=(1 if pt else self.args.batch, self.args.get("ch", 3), imgsz, imgsz))  # warmup
 
         self.run_callbacks("on_val_start")
         dt = (
@@ -172,12 +170,12 @@ class BaseValidator:
             self.batch_i = batch_i
             # Preprocess
             with dt[0]:
-                if self.args.get("ch",3) ==1:
+                if self.args.get("ch", 3) == 1:
                     # Before preprocess, transform the batch from bgr to grayscale
                     bgr_weights = torch.tensor([0.114, 0.587, 0.299]).to(device=self.device)
-                    batch["img"] = (
-                        batch["img"].to(device=self.device) * bgr_weights.view(1, 3, 1, 1)
-                    ).sum(dim=1, keepdim=True)
+                    batch["img"] = (batch["img"].to(device=self.device) * bgr_weights.view(1, 3, 1, 1)).sum(
+                        dim=1, keepdim=True
+                    )
                 batch = self.preprocess(batch)
 
             # Inference
@@ -225,8 +223,7 @@ class BaseValidator:
             return stats
 
     def match_predictions(self, pred_classes, true_classes, iou, use_scipy=False):
-        """
-        Matches predictions to ground truth objects (pred_classes, true_classes) using IoU.
+        """Matches predictions to ground truth objects (pred_classes, true_classes) using IoU.
 
         Args:
             pred_classes (torch.Tensor): Predicted class indices of shape(N,).

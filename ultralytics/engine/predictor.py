@@ -1,4 +1,4 @@
-# Ultralytics YOLO 🚀, AGPL-3.0 license
+# Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 """
 Run prediction on images, videos, directories, globs, YouTube, webcam, streams, etc.
 
@@ -61,8 +61,7 @@ Example:
 
 
 class BasePredictor:
-    """
-    BasePredictor.
+    """BasePredictor.
 
     A base class for creating predictors.
 
@@ -78,8 +77,7 @@ class BasePredictor:
     """
 
     def __init__(self, cfg=DEFAULT_CFG, overrides=None, _callbacks=None):
-        """
-        Initializes the BasePredictor class.
+        """Initializes the BasePredictor class.
 
         Args:
             cfg (str, optional): Path to a configuration file. Defaults to DEFAULT_CFG.
@@ -112,12 +110,11 @@ class BasePredictor:
         self._lock = threading.Lock()  # for automatic thread-safe inference
 
         # Initialize the number of channels in the image if specified by the user
-        self.ch = self.args.get("ch",3)
+        self.ch = self.args.get("ch", 3)
         callbacks.add_integration_callbacks(self)
 
     def preprocess(self, im):
-        """
-        Prepares input image before inference.
+        """Prepares input image before inference.
 
         Args:
             im (torch.Tensor | List(np.ndarray)): BCHW for tensor, [(HWC) x B] for list.
@@ -125,11 +122,11 @@ class BasePredictor:
         not_tensor = not isinstance(im, torch.Tensor)
         if not_tensor:
             im = np.stack(self.pre_transform(im))
-            if self.ch>1:
+            if self.ch > 1:
                 im = im[..., ::-1].transpose((0, 3, 1, 2))  # BGR to RGB, BHWC to BCHW, (n, 3, h, w)
             im = np.ascontiguousarray(im)  # contiguous
             im = torch.from_numpy(im)
-            if self.ch ==1:
+            if self.ch == 1:
                 # Transform the input img into a (n, 1, h, w) torch tensor
                 im = im.unsqueeze(1)
 
@@ -149,8 +146,7 @@ class BasePredictor:
         return self.model(im, augment=self.args.augment, visualize=visualize, embed=self.args.embed, *args, **kwargs)
 
     def pre_transform(self, im):
-        """
-        Pre-transform input image before inference.
+        """Pre-transform input image before inference.
 
         Args:
             im (List(np.ndarray)): (N, 3, h, w) for tensor, [(h, w, 3) x N] for list.
@@ -175,14 +171,13 @@ class BasePredictor:
             return list(self.stream_inference(source, model, *args, **kwargs))  # merge list of Result into one
 
     def predict_cli(self, source=None, model=None):
-        """
-        Method used for Command Line Interface (CLI) prediction.
+        """Method used for Command Line Interface (CLI) prediction.
 
         This function is designed to run predictions using the CLI. It sets up the source and model, then processes
         the inputs in a streaming manner. This method ensures that no outputs accumulate in memory by consuming the
         generator without storing results.
 
-        Note:
+        Notes:
             Do not modify this function or remove the generator. The generator ensures that no outputs are
             accumulated in memory, which is critical for preventing memory issues during long-running predictions.
         """
@@ -194,7 +189,7 @@ class BasePredictor:
         """Sets up source and inference mode."""
         self.imgsz = check_imgsz(self.args.imgsz, stride=self.model.stride, min_dim=2)  # check image size
 
-        # For classification model to work comment the following lines and create the transformations 
+        # For classification model to work comment the following lines and create the transformations
 
         # self.transforms = (
         #     getattr(
@@ -206,7 +201,9 @@ class BasePredictor:
         #     else None
         # )
         self.transforms = (
-            classify_transforms(self.imgsz[0], crop_fraction=self.args.crop_fraction, mean =[0]*self.ch, std =[1]*self.ch)
+            classify_transforms(
+                self.imgsz[0], crop_fraction=self.args.crop_fraction, mean=[0] * self.ch, std=[1] * self.ch
+            )
             if self.args.task == "classify"
             else None
         )
@@ -247,12 +244,16 @@ class BasePredictor:
 
             # Warmup model
             if not self.done_warmup:
-                # Change the number of channels in warmup from 3 to 1 if the models has been trained in a 1 channel input 
+                # Change the number of channels in warmup from 3 to 1 if the models has been trained in a 1 channel input
                 try:
-                    self.model.warmup(imgsz=(1 if self.model.pt or self.model.triton else self.dataset.bs, self.ch, *self.imgsz))
-                except RuntimeError: 
+                    self.model.warmup(
+                        imgsz=(1 if self.model.pt or self.model.triton else self.dataset.bs, self.ch, *self.imgsz)
+                    )
+                except RuntimeError:
                     self.ch = 1
-                    self.model.warmup(imgsz=(1 if self.model.pt or self.model.triton else self.dataset.bs, self.ch, *self.imgsz))
+                    self.model.warmup(
+                        imgsz=(1 if self.model.pt or self.model.triton else self.dataset.bs, self.ch, *self.imgsz)
+                    )
                 self.done_warmup = True
 
             self.seen, self.windows, self.batch = 0, [], None
@@ -274,7 +275,12 @@ class BasePredictor:
                         # If the channel wasn't specified correctly, try with 1 channel
                         self.ch = 1
                         self.transforms = (
-                            classify_transforms(self.imgsz[0], crop_fraction=self.args.crop_fraction, mean =[0]*self.ch, std =[1]*self.ch)
+                            classify_transforms(
+                                self.imgsz[0],
+                                crop_fraction=self.args.crop_fraction,
+                                mean=[0] * self.ch,
+                                std=[1] * self.ch,
+                            )
                             if self.args.task == "classify"
                             else None
                         )
@@ -393,7 +399,7 @@ class BasePredictor:
         # Save videos and streams
         if self.dataset.mode in {"stream", "video"}:
             fps = self.dataset.fps if self.dataset.mode == "video" else 30
-            frames_path = f'{save_path.split(".", 1)[0]}_frames/'
+            frames_path = f"{save_path.split('.', 1)[0]}_frames/"
             if save_path not in self.vid_writer:  # new video
                 if self.args.save_frames:
                     Path(frames_path).mkdir(parents=True, exist_ok=True)

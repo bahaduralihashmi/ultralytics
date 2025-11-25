@@ -1,4 +1,4 @@
-# YOLO Grayscale Support 
+# YOLO Grayscale Support
 
 This repository extends the functionalities of the ultralytics library by adding support for grayscale images. This functionality has been tested for detection and classification only. Its use for pose and segmentation haven't been tested yet lol.
 
@@ -9,17 +9,20 @@ To use grayscale image functionality in YOLO, replace the default `ultralytics` 
 **Using CLI**
 
 Go to the python packages or anaconda env libraries:
+
 ```bash
 cd /path/to/python/packages
 ```
 
 Remove the ultralytics package and clone this repo:
+
 ```bash
 rm -r ultralytics
-git clone  git@github.com:Mauricio-Gonzalez-Ortiz/ultralytics.git
+git clone git@github.com:Mauricio-Gonzalez-Ortiz/ultralytics.git
 ```
 
 Extract the ultralytics folder:
+
 ```bash
 find "ultralytics" -mindepth 1 -path "ultralytics/ultralytics" -prune -o -exec rm -rf {} +
 mv ultralytics/ultralytics/* ultralytics/
@@ -30,9 +33,9 @@ rm -r ultralytics/ultralytics
 
 Follow the steps in this medium [article](https://medium.com/@ing.mauricioglez1409/yolo-grayscale-training-b3a3b46dec5f)
 
-### Training 
+### Training
 
-To train a model in python you just need to specify a configuration flag for the number of channels  "ch=1"
+To train a model in python you just need to specify a configuration flag for the number of channels "ch=1"
 
 **Python Example**
 
@@ -43,50 +46,50 @@ model = YOLO("yolov8.pt")
 model.train(data="yaml_file.yaml", ..., ch=1)
 ```
 
-**CLI Example** 
+**CLI Example**
 
-```bash 
+```bash
 yolo detect/classify train data=yaml_file_path/folder_path ... ch=1
 ```
 
-### Prediction 
+### Prediction
 
-For prediction, it is recommended to specify the same "ch=1" flag 
+For prediction, it is recommended to specify the same "ch=1" flag
 
 **Python Example**
+
 ```python
+import cv2
 
 from ultralytics import YOLO
-import cv2 
 
 model = YOLO("path/to/your/model.pt")
-img = cv2.imread("path/to/your/image", cv2.IMREAD_GRAYSCALE) 
+img = cv2.imread("path/to/your/image", cv2.IMREAD_GRAYSCALE)
 results = model(img, ch=1)
 ```
 
 **CLI Example**
 
-Currently, prediction on grayscale images using the CLI doesn't work. 
+Currently, prediction on grayscale images using the CLI doesn't work.
 
 ### Exporting in different formats
 
-These changes also allow the user to export a model in a different format in grayscale: 
+These changes also allow the user to export a model in a different format in grayscale:
 
 **CLI Example**
 
 ```bash
-yolo export model="/path/to/your/model.pt" format="engine" ch=1 
+yolo export model="/path/to/your/model.pt" format="engine" ch=1
 ```
 
 If any problems arise when loading a different model type, specify the type of task
 
 ```python
+import cv2
 
 from ultralytics import YOLO
-import cv2 
 
 model = YOLO("path/to/your/model.engine", task="classify/detect")
-img = cv2.imread("path/to/your/image", cv2.IMREAD_GRAYSCALE) 
+img = cv2.imread("path/to/your/image", cv2.IMREAD_GRAYSCALE)
 results = model(img, ch=1)
 ```
-
